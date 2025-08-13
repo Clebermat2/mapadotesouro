@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infográfico: O Mapa do Tesouro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .map-step {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #FFD166;
+        }
+        .map-step:not(.completed):hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .map-step.completed {
+            cursor: default;
+            background-color: #EBFDF7; /* Light green */
+            border-color: #06D6A0;
+        }
+        .map-step.active {
+             border-color: #118AB2;
+             transform: scale(1.05);
+        }
+        .map-step.completed .icon-unlocked-text {
+            text-decoration: line-through;
+            color: #555;
+        }
+        .challenge-area {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, margin-top 0.5s ease-out;
+        }
+        .map-connector {
+            width: 4px;
+            height: 50px;
+            background-color: #FFD166;
+            position: relative;
+            transition: all 0.5s ease;
+        }
+        .map-connector::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: -6px;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #FFD166;
+        }
+        .hidden-step {
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .visible-step {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        #success-message {
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+    </style>
+</head>
+<body class="bg-[#F0F4F8]">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#073B4C]">O Mapa do Tesouro</h1>
+            <p id="subtitle" class="text-xl text-[#118AB2] mt-2">Clique no primeiro passo para revelar a dica e começar sua jornada!</p>
+        </header>
+
+        <main class="flex flex-col items-center">
+            
+            <!-- Step 1 -->
+            <div id="step-1" class="map-step bg-white rounded-lg shadow-lg p-6 w-full max-w-lg visible-step" onclick="showChallenge(1)">
+                <div class="flex items-center space-x-4">
+                    <div class="text-4xl">📜</div>
+                    <div>
+                        <h3 class="font-bold text-xl text-[#073B4C] icon-unlocked-text">1. Formalização da UEx</h3>
+                        <p class="text-gray-700">Crie o documento que rege a associação.</p>
+                    </div>
+                </div>
+                <div id="challenge-1" class="challenge-area">
+                    <p class="mt-4 p-3 bg-yellow-100 border-l-4 border-yellow-400 text-yellow-800 rounded-r-lg"><strong>Dica:</strong> É o documento principal que rege a associação, como uma constituição.</p>
+                    <div class="mt-4 flex space-x-2">
+                        <input id="answer-1" type="text" placeholder="Digite a palavra-chave" class="flex-grow p-2 border-2 border-gray-300 rounded-lg focus:border-[#118AB2] focus:ring-0">
+                        <button onclick="checkAnswer(1, 'ESTATUTO')" class="bg-[#118AB2] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#073B4C]">Verificar</button>
+                    </div>
+                    <p id="error-1" class="text-red-500 text-sm mt-1 hidden">Palavra incorreta. Tente novamente!</p>
+                </div>
+            </div>
+
+            <!-- Connector 1 -->
+            <div id="connector-1" class="map-connector my-4 hidden-step"></div>
+
+            <!-- Step 2 -->
+            <div id="step-2" class="map-step bg-white rounded-lg shadow-lg p-6 w-full max-w-lg hidden-step" onclick="showChallenge(2)">
+                 <div class="flex items-center space-x-4">
+                    <div class="text-4xl">🗳️</div>
+                    <div>
+                        <h3 class="font-bold text-xl text-[#073B4C] icon-unlocked-text">2. Eleição da Diretoria</h3>
+                        <p class="text-gray-700">Escolha os responsáveis pela gestão.</p>
+                    </div>
+                </div>
+                <div id="challenge-2" class="challenge-area">
+                    <p class="mt-4 p-3 bg-yellow-100 border-l-4 border-yellow-400 text-yellow-800 rounded-r-lg"><strong>Dica:</strong> É o nome da reunião formal onde os membros são escolhidos.</p>
+                    <div class="mt-4 flex space-x-2">
+                        <input id="answer-2" type="text" placeholder="Digite a palavra-chave" class="flex-grow p-2 border-2 border-gray-300 rounded-lg focus:border-[#118AB2] focus:ring-0">
+                        <button onclick="checkAnswer(2, 'ASSEMBLEIA')" class="bg-[#118AB2] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#073B4C]">Verificar</button>
+                    </div>
+                     <p id="error-2" class="text-red-500 text-sm mt-1 hidden">Palavra incorreta. Tente novamente!</p>
+                </div>
+            </div>
+
+            <!-- Connector 2 -->
+            <div id="connector-2" class="map-connector my-4 hidden-step"></div>
+
+            <!-- Step 3 -->
+            <div id="step-3" class="map-step bg-white rounded-lg shadow-lg p-6 w-full max-w-lg hidden-step" onclick="showChallenge(3)">
+                 <div class="flex items-center space-x-4">
+                    <div class="text-4xl">🏦</div>
+                    <div>
+                        <h3 class="font-bold text-xl text-[#073B4C] icon-unlocked-text">3. Abertura de Conta</h3>
+                        <p class="text-gray-700">Obtenha o registro para abrir a conta bancária.</p>
+                    </div>
+                </div>
+                <div id="challenge-3" class="challenge-area">
+                    <p class="mt-4 p-3 bg-yellow-100 border-l-4 border-yellow-400 text-yellow-800 rounded-r-lg"><strong>Dica:</strong> É o número de identificação da sua UEx na Receita Federal, necessário para abrir a conta.</p>
+                    <div class="mt-4 flex space-x-2">
+                        <input id="answer-3" type="text" placeholder="Digite a palavra-chave" class="flex-grow p-2 border-2 border-gray-300 rounded-lg focus:border-[#118AB2] focus:ring-0">
+                        <button onclick="checkAnswer(3, 'CNPJ')" class="bg-[#118AB2] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#073B4C]">Verificar</button>
+                    </div>
+                     <p id="error-3" class="text-red-500 text-sm mt-1 hidden">Palavra incorreta. Tente novamente!</p>
+                </div>
+            </div>
+
+            <!-- Connector 3 -->
+            <div id="connector-3" class="map-connector my-4 hidden-step"></div>
+
+            <!-- Step 4 -->
+            <div id="step-4" class="map-step bg-white rounded-lg shadow-lg p-6 w-full max-w-lg hidden-step" onclick="showChallenge(4)">
+                 <div class="flex items-center space-x-4">
+                    <div class="text-4xl">💻</div>
+                    <div>
+                        <h3 class="font-bold text-xl text-[#073B4C] icon-unlocked-text">4. Cadastro no Sistema</h3>
+                        <p class="text-gray-700">Insira os dados na plataforma do FNDE.</p>
+                    </div>
+                </div>
+                <div id="challenge-4" class="challenge-area">
+                    <p class="mt-4 p-3 bg-yellow-100 border-l-4 border-yellow-400 text-yellow-800 rounded-r-lg"><strong>Dica:</strong> É o nome do sistema web do FNDE para gerenciar o Dinheiro Direto na Escola.</p>
+                    <div class="mt-4 flex space-x-2">
+                        <input id="answer-4" type="text" placeholder="Digite a palavra-chave" class="flex-grow p-2 border-2 border-gray-300 rounded-lg focus:border-[#118AB2] focus:ring-0">
+                        <button onclick="checkAnswer(4, 'PDDEWEB')" class="bg-[#118AB2] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#073B4C]">Verificar</button>
+                    </div>
+                     <p id="error-4" class="text-red-500 text-sm mt-1 hidden">Palavra incorreta. Tente novamente!</p>
+                </div>
+            </div>
+
+        </main>
+
+        <footer id="success-message" class="text-center mt-12 py-8 hidden-step">
+            <div class="bg-white p-8 rounded-lg shadow-2xl inline-block">
+                <h3 class="text-2xl font-bold text-[#073B4C]">Parabéns! Você encontrou o mapa que revela o caminho para habilitar sua UEx.</h3>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        function showChallenge(stepNumber) {
+            const currentStep = document.getElementById(`step-${stepNumber}`);
+            if (currentStep.classList.contains('completed') || currentStep.classList.contains('active')) return;
+            
+            // Fecha outros desafios abertos
+            document.querySelectorAll('.map-step.active').forEach(step => step.classList.remove('active'));
+            document.querySelectorAll('.challenge-area').forEach(area => area.style.maxHeight = '0');
+
+            currentStep.classList.add('active');
+            const challengeArea = document.getElementById(`challenge-${stepNumber}`);
+            challengeArea.style.maxHeight = challengeArea.scrollHeight + "px";
+            challengeArea.style.marginTop = '1rem';
+        }
+
+        function checkAnswer(stepNumber, correctAnswer) {
+            const input = document.getElementById(`answer-${stepNumber}`);
+            const error = document.getElementById(`error-${stepNumber}`);
+            const userAnswer = input.value.toUpperCase().trim();
+
+            if (userAnswer === correctAnswer) {
+                error.classList.add('hidden');
+                completeStep(stepNumber);
+            } else {
+                error.classList.remove('hidden');
+                input.value = '';
+            }
+        }
+        
+        function completeStep(stepNumber) {
+            const currentStep = document.getElementById(`step-${stepNumber}`);
+            const challengeArea = document.getElementById(`challenge-${stepNumber}`);
+            
+            currentStep.classList.remove('active');
+            currentStep.classList.add('completed');
+            currentStep.onclick = null;
+            challengeArea.style.maxHeight = '0';
+            
+            const subtitle = document.getElementById('subtitle');
+
+            if (stepNumber < 4) {
+                const nextConnector = document.getElementById(`connector-${stepNumber}`);
+                const nextStep = document.getElementById(`step-${stepNumber + 1}`);
+                
+                setTimeout(() => {
+                    nextConnector.classList.remove('hidden-step');
+                    nextConnector.classList.add('visible-step');
+                    nextStep.classList.remove('hidden-step');
+                    nextStep.classList.add('visible-step');
+                }, 300);
+                
+                subtitle.innerText = `Pista ${stepNumber} decifrada! Clique no próximo passo para revelar uma nova dica.`;
+
+            } else {
+                const successMessage = document.getElementById('success-message');
+                setTimeout(() => {
+                    successMessage.classList.remove('hidden-step');
+                    successMessage.classList.add('visible-step');
+                    subtitle.innerText = "Tesouro Encontrado!";
+                }, 500);
+            }
+        }
+    </script>
+
+</body>
+</html>
